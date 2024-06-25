@@ -1,0 +1,11 @@
+services:
+  book:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80:5000
+    env_file: ".env"
+    volumes:
+      - .:/app
+      - ./result:/app/result

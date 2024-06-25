@@ -1,0 +1,8 @@
+.env
+/result
+__pycache__
+venv
+key.txt
+/wip
+/fonts
+.DS_Store

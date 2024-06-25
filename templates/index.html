@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Story generator{% endblock %}
+
+{% block content %}
+<div id="result-container">
+    <!-- Result will be inserted here -->
+</div>
+<button id="copy-button">Copy Result</button>
+
+<form id="text-form">
+    <label for="user_input">Enter Text:</label><br>
+    <textarea id="user_input" name="user_input" style="width: 80%" rows="30" required>
+ Type your story outline here
+    </textarea><br>
+    <button class="btn-primary" type="button" id="text-btn">Generate text only</button>
+    <button class="btn-primary" type="button" id="image-btn">Generate text and image</button>
+</form>
+
+<script>
+    $(document).ready(function() {
+        $('#text-btn').click(function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Get the form data
+            var formData = {
+                'user_input': $('#user_input').val()
+            };
+
+            // Send AJAX request
+            $.ajax({
+                type: 'POST',
+                url: '/result',  // Your Flask route
+                data: formData,
+                success: function(response) {
+                    // Handle the response from Flask
+                    $('#result-container').html('<h1>Your story</h1><p><pre>' + response.result + '</pre></p><p>Finish reason: ' + response.status + '</p>');
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                    // Handle errors if any
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#image-btn').click(function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Get the form data
+            var formData = {
+                'user_input': $('#user_input').val()
+            };
+
+            // Send AJAX request
+            $.ajax({
+                type: 'POST',
+                url: '/result_image',  // Your Flask route
+                data: formData,
+                success: function(response) {
+                    // Handle the response from Flask
+                    $('#result-container').html('<h1>Your story</h1><img src=' + response.image_url + ' alt="Embedded Image" width="50%"><p><pre>' + response.result);
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                    // Handle errors if any
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
